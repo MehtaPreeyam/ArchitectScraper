@@ -18,6 +18,7 @@ class Category(Enum):
     StomachDigestion = 'Stomach and Digestion'
     WeightManagement = 'Weight Management'
     WomensHealth = "Women's Health"
+    Other = "Other"
 
 class AllergyCare(Enum):
     Allergy_Testing = 'Allergy Testing'

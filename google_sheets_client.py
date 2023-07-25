@@ -7,6 +7,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from typing import List
+from digital_health_comapny import DigitalHealthStartup
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -15,8 +17,11 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SAMPLE_SPREADSHEET_ID = '11j5Y93BjrRURay-rm_LJTsHNCp5zX6IaqN8QoUkJn54'
 SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
+def write_data_to_database(digital_health_companies: List[DigitalHealthStartup]):
 
-def main():
+
+
+def read_data_from_database():
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
@@ -57,7 +62,3 @@ def main():
             print('%s, %s' % (row[0], row[4]))
     except HttpError as err:
         print(err)
-
-
-if __name__ == '__main__':
-    main()

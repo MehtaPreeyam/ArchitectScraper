@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os.path
+import requests
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -8,16 +9,50 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from typing import List
-from digital_health_comapny import DigitalHealthStartup
+from digital_health_company import DigitalHealthStartup
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '11j5Y93BjrRURay-rm_LJTsHNCp5zX6IaqN8QoUkJn54'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
+SAMPLE_RANGE_NAME = 'Sheet1!A2:E'
 
-def write_data_to_database(digital_health_companies: List[DigitalHealthStartup]):
+def write_data_to_database(self, spreadsheet_id, digital_health_companies: List[DigitalHealthStartup]):
+    #need range of cells, spreadsheet ID, and data to be written in 
+    base_url = "https://sheets.googleapis.com/v4/spreadsheets/"
+    sheet_name = "Sheet1"  # Replace with the name of the sheet you want to write to
+    # Construct the URL for the request
+    url = f"{base_url}{spreadsheet_id}/values/{sheet_name}!A1:E1?valueInputOption=RAW"
+
+    # Prepare the data to be written to the spreadsheet
+    data = {
+        "values": [
+            [
+                self.name,
+                ','.join(self.locations_serviced),
+                ','.join(self.insurance_plans),
+                self.cost_info,
+                self.min_age,
+                self.max_age,
+                self.targeted_sex,
+                self.targeted_gender,
+                self.targeted_race_or_ethnicity,
+                self.targeted_income,
+                self.disease_category,
+                self.disease_subcategory
+            ]
+        ]
+    }
+
+    # Send the PUT request to update the data in the spreadsheet
+    response = requests.put(url, json=data)
+
+    # Check the response status to see if the data was successfully updated
+    if response.status_code == 200:
+        print("Data successfully written to the spreadsheet.")
+    else:
+        print("Error writing data to the spreadsheet.")
 
 
 
